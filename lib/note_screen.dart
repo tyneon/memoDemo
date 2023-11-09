@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:memo/editing_screen.dart';
 import 'package:memo/note.dart';
+import 'package:memo/notes_provider.dart';
 
-class NoteScreen extends StatelessWidget {
-  final Note note;
-  const NoteScreen(this.note, {super.key});
+class NoteScreen extends ConsumerWidget {
+  final String noteId;
+  const NoteScreen(this.noteId, {super.key});
 
   String reminderMessage(
     DateTime? deadline,
@@ -41,8 +44,11 @@ class NoteScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final note =
+        ref.watch(notesProvider).singleWhere((element) => element.id == noteId);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -56,82 +62,92 @@ class NoteScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => EditingScreen(note: note),
+            ),
+          );
+        },
         elevation: 10,
         child: const Icon(Icons.edit),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (note.dateTime != null)
-              note.timed
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          DateFormat('HH:mm').format(note.dateTime!),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                        ),
-                        Text(
-                          DateFormat('dd/MM/yy').format(note.dateTime!),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Text(
-                        DateFormat('d/M/y').format(note.dateTime!),
-                        style:
-                            Theme.of(context).textTheme.displaySmall!.copyWith(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (note.dateTime != null)
+                note.timed
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            DateFormat('HH:mm').format(note.dateTime!),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
                                   color: Theme.of(context).colorScheme.tertiary,
                                 ),
+                          ),
+                          Text(
+                            DateFormat('dd/MM/yy').format(note.dateTime!),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                          ),
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          DateFormat('d/M/y').format(note.dateTime!),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                        ),
                       ),
-                    ),
-            const Divider(),
-            Container(
-              height: 400,
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                note.text,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const Divider(),
-            Text(
-              "Reminders:",
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: note.reminders.length,
-                itemBuilder: (context, index) => Text(
-                  reminderMessage(
-                    note.dateTime,
-                    note.reminders[index],
-                  ),
+              const Divider(),
+              Container(
+                height: 400,
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  note.text,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
-            ),
-          ],
+              const Divider(),
+              Text(
+                "Reminders:",
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: note.reminders.length,
+                  itemBuilder: (context, index) => Text(
+                    reminderMessage(
+                      note.dateTime,
+                      note.reminders[index],
+                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

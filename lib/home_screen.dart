@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:memo/editing_screen.dart';
 import 'package:memo/note_screen.dart';
 
 import 'package:memo/notes_provider.dart';
@@ -25,7 +26,13 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const EditingScreen(),
+            ),
+          );
+        },
         elevation: 10,
         child: const Icon(Icons.add),
       ),
@@ -48,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => NoteScreen(note),
+                              builder: (_) => NoteScreen(note.id),
                             ),
                           );
                         },
