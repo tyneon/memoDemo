@@ -4,7 +4,32 @@ import 'package:intl/intl.dart';
 import 'package:memo/editing_screen.dart';
 import 'package:memo/note_screen.dart';
 
+import 'package:memo/theme_provider.dart';
 import 'package:memo/notes_provider.dart';
+
+class ThemeToggleButton extends ConsumerStatefulWidget {
+  const ThemeToggleButton({super.key});
+
+  @override
+  ConsumerState<ThemeToggleButton> createState() => _ThemeToggleButtonState();
+}
+
+class _ThemeToggleButtonState extends ConsumerState<ThemeToggleButton> {
+  bool dark = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          dark = !dark;
+          ref.read(themeProvider.notifier).toggle(dark: dark);
+        });
+      },
+      icon: Icon(dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+    );
+  }
+}
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -24,6 +49,7 @@ class HomeScreen extends ConsumerWidget {
             Text("Remind me! app"),
           ],
         ),
+        actions: const [ThemeToggleButton()],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -49,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
                             ? Icons.alarm
                             : Icons.event;
                     return Card(
-                      elevation: 0,
+                      // elevation: 0,
                       child: ListTile(
                         onTap: () {
                           Navigator.push(

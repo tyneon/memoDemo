@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:memo/home_screen.dart';
-import 'package:memo/app_theme.dart';
+import 'package:memo/theme_provider.dart';
 
 void main() {
   runApp(
@@ -12,13 +12,13 @@ void main() {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      theme: appTheme,
+      theme: ref.watch(themeProvider),
       home: const HomeScreen(),
     );
   }

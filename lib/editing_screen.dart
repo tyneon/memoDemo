@@ -19,19 +19,28 @@ class EditingScreen extends ConsumerStatefulWidget {
 class _EditingScreenState extends ConsumerState<EditingScreen> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController dateController;
+  late TextEditingController timeController;
   String noteText = "";
-  DateTime? date;
+  DateTime? dateTime;
   bool pickDate = false;
+  bool pickTime = false;
 
   @override
   void initState() {
     super.initState();
-    date = widget.note?.dateTime;
+    dateTime = widget.note?.dateTime;
     pickDate = (widget.note?.dateTime != null);
+    pickTime = widget.note?.timed ?? false;
     dateController = TextEditingController(
-        text: (widget.note == null || widget.note!.dateTime == null)
-            ? null
-            : DateFormat.yMd().format(widget.note!.dateTime!));
+      text: (widget.note == null || widget.note!.dateTime == null)
+          ? null
+          : DateFormat.yMd().format(widget.note!.dateTime!),
+    );
+    timeController = TextEditingController(
+      text: (widget.note == null || widget.note!.dateTime == null)
+          ? null
+          : DateFormat.Hm().format(widget.note!.dateTime!),
+    );
   }
 
   @override
@@ -66,19 +75,22 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                   },
                 ),
               ),
-              Checkbox(
-                value: pickDate,
-                onChanged: (value) {
-                  setState(() {
-                    pickDate = value!;
-                  });
-                },
+              Row(
+                children: [
+                  Checkbox(
+                    value: pickDate,
+                    onChanged: (value) {
+                      setState(() {
+                        pickDate = value!;
+                      });
+                    },
+                  ),
+                  const Text("Include date"),
+                ],
               ),
-              if (pickDate)
+              if (pickDate) ...[
                 TextFormField(
                   controller: dateController,
-                  // initialValue:
-                  //     date == null ? null : DateFormat.yMd().format(date!),
                   onTap: () {
                     showDatePicker(
                       context: context,
@@ -86,8 +98,19 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                       firstDate: DateTime(2023),
                       lastDate: DateTime(2100),
                     ).then((value) {
-                      date = value;
-                      dateController.text = DateFormat.yMd().format(date!);
+                      if (value == null) return;
+                      setState(() {
+                        dateTime = DateTime(
+                          value.year,
+                          value.month,
+                          value.day,
+                          dateTime?.hour ?? DateTime.now().hour,
+                          dateTime?.minute ?? DateTime.now().minute,
+                        );
+                        dateController.text =
+                            DateFormat.yMd().format(dateTime!);
+                        timeController.text = DateFormat.Hm().format(dateTime!);
+                      });
                     });
                   },
                   readOnly: true,
@@ -97,12 +120,61 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                     hintText: "Pick date",
                   ),
                   validator: (value) {
-                    if (pickDate && date == null) {
+                    if (pickDate && dateTime == null) {
                       return "Pick a date!";
                     }
                     return null;
                   },
                 ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: pickTime,
+                      onChanged: (value) {
+                        setState(() {
+                          pickTime = value!;
+                        });
+                      },
+                    ),
+                    const Text("Include time"),
+                  ],
+                ),
+                if (pickTime)
+                  TextFormField(
+                    controller: timeController,
+                    enabled: dateTime != null,
+                    onTap: () {
+                      if (dateTime == null) return;
+                      showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  dateTime ?? DateTime.now()))
+                          .then((value) {
+                        if (value == null || dateTime == null) return;
+                        dateTime = DateTime(
+                          dateTime!.year,
+                          dateTime!.month,
+                          dateTime!.day,
+                          value.hour,
+                          value.minute,
+                        );
+                        timeController.text = DateFormat.Hm().format(dateTime!);
+                      });
+                    },
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      label: Text("Time"),
+                      hintText: "Pick time",
+                    ),
+                    validator: (value) {
+                      if (pickDate && pickTime && dateTime == null) {
+                        return "Pick a time!";
+                      }
+                      return null;
+                    },
+                  ),
+              ],
               const SizedBox(
                 height: 10,
               ),
@@ -119,11 +191,12 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                   notesNotifier.add(Note(
                     noteText,
                     id: widget.note?.id,
-                    dateTime: pickDate ? date : null,
+                    dateTime: pickDate ? dateTime : null,
+                    timed: pickTime,
                   ));
                   Navigator.of(context).pop();
                 },
-                child: Text("Save note"),
+                child: const Text("Save note"),
               ),
             ],
           ),
