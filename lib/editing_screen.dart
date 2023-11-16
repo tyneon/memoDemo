@@ -186,14 +186,19 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                   formKey.currentState!.save();
                   final notesNotifier = ref.read(notesProvider.notifier);
                   if (widget.note != null) {
-                    notesNotifier.remove(widget.note!);
+                    notesNotifier.replace(
+                      widget.note!.id,
+                      noteText,
+                      pickDate ? dateTime : null,
+                      pickTime,
+                    );
+                  } else {
+                    notesNotifier.add(
+                      noteText,
+                      pickDate ? dateTime : null,
+                      pickTime,
+                    );
                   }
-                  notesNotifier.add(Note(
-                    noteText,
-                    id: widget.note?.id,
-                    dateTime: pickDate ? dateTime : null,
-                    timed: pickTime,
-                  ));
                   Navigator.of(context).pop();
                 },
                 child: const Text("Save note"),

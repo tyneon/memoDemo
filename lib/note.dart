@@ -1,19 +1,18 @@
 class Note {
-  final String id;
+  final int id;
   final String text;
   final DateTime? dateTime;
   final bool timed;
-  final bool important;
+  // final bool important;
   final List<DateTime> reminders;
   Note(
     this.text, {
-    String? id,
+    this.id = 0,
     this.dateTime,
     this.timed = false,
-    this.important = false,
+    // this.important = false,
     this.reminders = const <DateTime>[],
-  })  : id = id ?? DateTime.now().toString(),
-        assert(timed ? dateTime != null : true);
+  }) : assert(timed ? dateTime != null : true);
 }
 
 final dummy_notes = <Note>[

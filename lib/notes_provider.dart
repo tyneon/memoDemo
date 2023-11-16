@@ -1,18 +1,37 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:memo/note.dart';
+import 'package:memo/db.dart';
 
-class Notes extends Notifier<List<Note>> {
+class Notes extends AsyncNotifier<List<Note>> {
   @override
-  List<Note> build() => dummy_notes;
+  FutureOr<List<Note>> build() async => await Db.getAll();
 
-  void add(Note note) {
-    state = [...state, note];
+  Future<void> add(String text, DateTime? dateTime, bool timed) async {
+    final note = await Db.add(text, dateTime, timed);
+    state = AsyncData([...state.value!, note]);
   }
 
-  void remove(Note note) {
-    state = state.where((element) => element != note).toList();
+  Future<void> replace(
+    int id,
+    String text,
+    DateTime? dateTime,
+    bool timed,
+  ) async {
+    final note = await Db.update(id, text, dateTime, timed);
+    state = AsyncData(
+      [
+        ...state.value!.where((element) => element.id != note.id),
+        note,
+      ],
+    );
   }
+
+  // void remove(Note note) {
+  //   state = state.where((element) => element != note).toList();
+  // }
 }
 
-final notesProvider = NotifierProvider<Notes, List<Note>>(Notes.new);
+final notesProvider = AsyncNotifierProvider<Notes, List<Note>>(Notes.new);

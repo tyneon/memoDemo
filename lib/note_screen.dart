@@ -7,7 +7,7 @@ import 'package:memo/note.dart';
 import 'package:memo/notes_provider.dart';
 
 class NoteScreen extends ConsumerWidget {
-  final String noteId;
+  final int noteId;
   const NoteScreen(this.noteId, {super.key});
 
   String reminderMessage(
@@ -45,8 +45,17 @@ class NoteScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncNotes = ref.watch(notesProvider);
+    if (asyncNotes.isLoading || asyncNotes.hasError) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     final note =
-        ref.watch(notesProvider).singleWhere((element) => element.id == noteId);
+        asyncNotes.value!.singleWhere((element) => element.id == noteId);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

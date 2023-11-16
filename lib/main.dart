@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:memo/db.dart';
 import 'package:memo/home_screen.dart';
 import 'package:memo/theme_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Storage.init();
+  await Db.init();
   runApp(
     const ProviderScope(
       child: MainApp(),
