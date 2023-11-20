@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:memo/editing_screen.dart';
-import 'package:memo/note_screen.dart';
+import 'package:memo/ui/editing_screen.dart';
+import 'package:memo/ui/note_screen.dart';
 
-import 'package:memo/theme_provider.dart';
-import 'package:memo/notes_provider.dart';
+import 'package:memo/src/theme_provider.dart';
+import 'package:memo/src/notes_provider.dart';
 
 class ThemeToggleButton extends ConsumerStatefulWidget {
   const ThemeToggleButton({super.key});

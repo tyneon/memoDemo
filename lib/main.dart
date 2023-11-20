@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:memo/db.dart';
-import 'package:memo/home_screen.dart';
-import 'package:memo/theme_provider.dart';
+import 'package:memo/api/db.dart';
+import 'package:memo/ui/home_screen.dart';
+import 'package:memo/src/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

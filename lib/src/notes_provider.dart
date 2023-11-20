@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:memo/note.dart';
-import 'package:memo/db.dart';
+import 'package:memo/src/note.dart';
+import 'package:memo/api/db.dart';
 
 class Notes extends AsyncNotifier<List<Note>> {
   @override

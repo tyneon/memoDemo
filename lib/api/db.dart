@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import 'package:memo/note.dart';
+import 'package:memo/src/note.dart';
 
 class Db {
   static late Database db;
