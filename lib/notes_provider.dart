@@ -29,9 +29,11 @@ class Notes extends AsyncNotifier<List<Note>> {
     );
   }
 
-  // void remove(Note note) {
-  //   state = state.where((element) => element != note).toList();
-  // }
+  void remove(Note note) {
+    Db.delete(id: note.id);
+    state = AsyncData(
+        state.value!.where((element) => element.id != note.id).toList());
+  }
 }
 
 final notesProvider = AsyncNotifierProvider<Notes, List<Note>>(Notes.new);
