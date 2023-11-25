@@ -1,19 +1,60 @@
-class Note {
+import 'package:memo/src/location.dart';
+
+class Note implements Comparable<Note> {
   final int id;
   final String text;
   final DateTime? dateTime;
   final bool timed;
-  // final bool important;
+  final Location? location;
   final List<DateTime> reminders;
   Note(
     this.text, {
     this.id = 0,
     this.dateTime,
     this.timed = false,
-    // this.important = false,
+    this.location,
     this.reminders = const <DateTime>[],
   }) : assert(timed ? dateTime != null : true);
+
+  @override
+  int compareTo(Note other) {
+    if (dateTime == null) {
+      if (other.dateTime == null) {
+        return id - other.id;
+      }
+      return 1;
+    }
+    if (other.dateTime == null) {
+      return -1;
+    }
+    return dateTime!.compareTo(other.dateTime!);
+  }
 }
+
+final dummyNotesWithLocations = <Note>[
+  Note(
+    "Retrovawe/synth rock концерт",
+    dateTime: DateTime(2023, 11, 26, 20),
+    timed: true,
+    reminders: [
+      DateTime(2023, 11, 25, 20),
+      DateTime(2023, 11, 26, 18),
+    ],
+    location: Location(
+      lat: 41.7051147,
+      lon: 44.7904186,
+      address:
+          "Philosof CLub, Giorgi Akhvlediani Street 6, 0108 Tbilisi, Georgia",
+    ),
+  ),
+  Note(
+    "Тбилисское море",
+    location: Location(
+      lat: 41.725590,
+      lon: 44.878647,
+    ),
+  ),
+];
 
 final dummy_notes = <Note>[
   Note(

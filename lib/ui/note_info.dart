@@ -95,6 +95,17 @@ class NoteInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
+              if (note.location != null) ...[
+                const Divider(),
+                Text(
+                  "Location:",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                Text(note.location.toString()),
+              ],
               const Divider(),
               Text(
                 "Reminders:",

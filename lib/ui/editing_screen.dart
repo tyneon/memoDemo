@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:memo/helpers.dart';
+import 'package:memo/src/location.dart';
 import 'package:memo/src/note.dart';
 import 'package:memo/src/notes_provider.dart';
 
@@ -23,15 +24,21 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
   late TextEditingController timeController;
   String noteText = "";
   DateTime? dateTime;
+  Location? location;
   bool pickDate = false;
   bool pickTime = false;
+  bool pickLocation = false;
 
   @override
   void initState() {
     super.initState();
     dateTime = widget.note?.dateTime;
-    pickDate = (widget.note?.dateTime != null);
+    location = widget.note?.location;
+
+    pickDate = (dateTime != null);
     pickTime = widget.note?.timed ?? false;
+    pickLocation = (location != null);
+
     dateController = TextEditingController(
       text: (widget.note == null || widget.note!.dateTime == null)
           ? null
@@ -153,6 +160,20 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
             ),
           ),
       ],
+      Row(
+        children: [
+          Checkbox.adaptive(
+            value: pickLocation,
+            onChanged: (value) {
+              setState(() {
+                pickLocation = value!;
+                location = pickLocation ? dummyLocation : null; // TODO change
+              });
+            },
+          ),
+          const Text("Include location"),
+        ],
+      ),
       const SizedBox(
         height: 10,
       ),
@@ -174,12 +195,14 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                 noteText,
                 pickDate ? dateTime : null,
                 pickTime,
+                pickLocation ? location : null,
               );
             } else {
               notesNotifier.add(
                 noteText,
                 pickDate ? dateTime : null,
                 pickTime,
+                pickLocation ? location : null,
               );
             }
             Navigator.of(context).pop();
