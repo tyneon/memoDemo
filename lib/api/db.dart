@@ -26,7 +26,7 @@ class Db {
           batch.commit();
         }
       },
-      onOpen: _builder,
+      // onOpen: _builder,
     );
   }
 
@@ -75,7 +75,9 @@ class Db {
         .map((data) async => Note(
               data['text'] as String,
               id: data['id'] as int,
-              dateTime: DateTime.tryParse(data['date_time'] as String),
+              dateTime: data['date_time'] == null
+                  ? null
+                  : DateTime.tryParse(data['date_time'] as String),
               timed: (data['timed'] as int) == 1,
               location: data['location_id'] == null
                   ? null

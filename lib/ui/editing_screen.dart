@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:memo/helpers.dart';
 import 'package:memo/src/location.dart';
+import 'package:memo/src/location_provider.dart';
 import 'package:memo/src/note.dart';
 import 'package:memo/src/notes_provider.dart';
 
@@ -22,6 +26,7 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController dateController;
   late TextEditingController timeController;
+  late TextEditingController locationController;
   String noteText = "";
   DateTime? dateTime;
   Location? location;
@@ -49,6 +54,10 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
           ? null
           : DateFormat.Hm().format(widget.note!.dateTime!),
     );
+    locationController = TextEditingController(
+        text: (widget.note == null || widget.note!.location == null)
+            ? null
+            : widget.note!.location!.toString());
   }
 
   @override
@@ -174,6 +183,48 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
           const Text("Include location"),
         ],
       ),
+      if (pickLocation)
+        Row(
+          children: [
+            SizedBox(
+              width: wideModeActive(context)
+                  ? 100
+                  : MediaQuery.of(context).size.width - 100,
+              child: TextFormField(
+                // initialValue: widget.note?.location?.address,
+                controller: locationController,
+                decoration: const InputDecoration(
+                  filled: true,
+                  label: Text("Location"),
+                  hintText: "Search location",
+                ),
+                validator: (value) {
+                  if (pickLocation && value == "") {
+                    return "Enter location!";
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  // location = ???
+                },
+              ),
+            ),
+            FilledButton.icon(
+              onPressed: () async {
+                location = await showDialog<Location?>(
+                  context: context,
+                  builder: (context) =>
+                      LocationSearchResults(locationController.text),
+                );
+                if (location != null) {
+                  locationController.text = location.toString();
+                }
+              },
+              label: Container(),
+              icon: const Icon(Icons.pin_drop_outlined),
+            )
+          ],
+        ),
       const SizedBox(
         height: 10,
       ),
@@ -255,6 +306,53 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LocationSearchResults extends ConsumerWidget {
+  final String query;
+  const LocationSearchResults(this.query, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locationAsyncValue = ref.watch(locationProvider(query));
+    List<Location> locations = [];
+    if (locationAsyncValue.hasValue) {
+      try {
+        final results = jsonDecode(locationAsyncValue.value!.body)['results']
+            as List<dynamic>;
+        locations = results
+            .map((item) => Location(
+                  lat: item['geometry']['lat'],
+                  lon: item['geometry']['lng'],
+                  address: item['formatted'],
+                ))
+            .toList();
+      } catch (e) {
+        print(e);
+      }
+    }
+    return Dialog(
+      child: locationAsyncValue.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: locations
+                  .map(
+                    (location) => ListTile(
+                      onTap: () {
+                        Navigator.of(context).pop<Location?>(location);
+                      },
+                      title: Text(
+                        location.address ?? "",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text("${location.lat}, ${location.lon}"),
+                    ),
+                  )
+                  .toList(),
+            ),
     );
   }
 }
