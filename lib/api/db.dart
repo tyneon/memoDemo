@@ -1,3 +1,5 @@
+// Not used
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -74,7 +76,7 @@ class Db {
     return Future.wait(result
         .map((data) async => Note(
               data['text'] as String,
-              id: data['id'] as int,
+              id: (data['id'] as int).toString(),
               dateTime: data['date_time'] == null
                   ? null
                   : DateTime.tryParse(data['date_time'] as String),
@@ -155,7 +157,7 @@ class Db {
     }
     return Note(
       text,
-      id: id,
+      id: id.toString(),
       dateTime: dateTime,
       timed: timed,
       location: location,

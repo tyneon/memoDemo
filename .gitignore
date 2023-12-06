@@ -10,7 +10,7 @@
 .svn/
 migrate_working_dir/
 *.diff
-api_key.dart
+lib/location_api_key.dart
 
 # IntelliJ related
 *.iml
@@ -44,3 +44,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
+/ios/firebase_app_id_file.json
+/lib/firebase_options.dart

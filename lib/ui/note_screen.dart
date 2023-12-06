@@ -7,7 +7,7 @@ import 'package:memo/src/notes_provider.dart';
 import 'package:memo/ui/note_info.dart';
 
 class NoteScreen extends ConsumerWidget {
-  final int noteId;
+  final String noteId;
   const NoteScreen(this.noteId, {super.key});
 
   @override

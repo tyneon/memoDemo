@@ -1,7 +1,7 @@
 import 'package:memo/src/location.dart';
 
 class Note implements Comparable<Note> {
-  final int id;
+  final String id;
   final String text;
   final DateTime? dateTime;
   final bool timed;
@@ -9,7 +9,7 @@ class Note implements Comparable<Note> {
   final List<DateTime> reminders;
   Note(
     this.text, {
-    this.id = 0,
+    this.id = "0",
     this.dateTime,
     this.timed = false,
     this.location,
@@ -20,7 +20,7 @@ class Note implements Comparable<Note> {
   int compareTo(Note other) {
     if (dateTime == null) {
       if (other.dateTime == null) {
-        return id - other.id;
+        id.compareTo(other.id);
       }
       return 1;
     }

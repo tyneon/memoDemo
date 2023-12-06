@@ -247,6 +247,7 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                 pickDate ? dateTime : null,
                 pickTime,
                 pickLocation ? location : null,
+                widget.note!.reminders,
               );
             } else {
               notesNotifier.add(
