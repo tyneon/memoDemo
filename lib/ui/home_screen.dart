@@ -7,6 +7,7 @@ import 'package:memo/ui/editing_screen.dart';
 import 'package:memo/ui/note_screen.dart';
 import 'package:memo/ui/note_info.dart';
 import 'package:memo/src/theme_provider.dart';
+import 'package:memo/src/locale_provider.dart';
 import 'package:memo/src/current_note_provider.dart';
 import 'package:memo/src/notes_provider.dart';
 import 'package:memo/helpers.dart';
@@ -59,7 +60,10 @@ class HomeScreen extends ConsumerWidget {
             Text(AppLocalizations.of(context)!.pageHomeTitle),
           ],
         ),
-        actions: const [ThemeToggleButton()],
+        actions: const [
+          LocaleMenu(),
+          ThemeToggleButton(),
+        ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -263,5 +267,27 @@ class NotesList extends ConsumerWidget {
           ),
         ),
     };
+  }
+}
+
+class LocaleMenu extends ConsumerWidget {
+  const LocaleMenu({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButton(
+      value: ref.watch(localeProvider).languageCode,
+      items: AppLocalizations.supportedLocales
+          .map(
+            (locale) => DropdownMenuItem(
+              value: locale.languageCode,
+              child: Text(locale.languageCode),
+            ),
+          )
+          .toList(),
+      onChanged: (value) {
+        ref.read(localeProvider.notifier).toggle(value ?? "en");
+      },
+    );
   }
 }

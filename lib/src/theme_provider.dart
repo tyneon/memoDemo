@@ -1,14 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Storage {
-  static late SharedPreferences instance;
-  static Future<void> init() async {
-    instance = await SharedPreferences.getInstance();
-  }
-}
+import 'package:memo/api/local_storage.dart';
 
 const _grey16 = Color(0xff161616);
 const _grey30 = Color(0xff303030);
