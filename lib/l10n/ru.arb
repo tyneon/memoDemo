@@ -1,0 +1,87 @@
+{
+  "@@locale": "ru",
+  "pageHomeTitle": "Напоминалка!",
+  "noteTextInputLabel": "Текст заметки",
+  "noteTextInputHint": "здесь будет текст",
+  "noteTextInputValidationErrorEmpty": "Текст заметки не может быть пустым",
+  "includeDateCheckLabel": "Добавить дату",
+  "dateInputLabel": "Дата",
+  "dateInputHint": "Выбор даты",
+  "dateInputValidationErrorEmpty": "Нужно выбрать дату!",
+  "includeTimeCheckLabel": "Добавить время",
+  "timeInputLabel": "Время",
+  "timeInputHint": "Выбор времени",
+  "timeInputValidationErrorEmpty": "Нужно выбрать время!",
+  "includeLocationCheckLabel": "Добавить местоположение",
+  "locationInputLabel": "Местоположение",
+  "locationInputHint": "Поиск местоположения",
+  "locationInputValidationErrorEmpty": "Нужно выбрать местоположение!",
+  "saveNoteButtonLabel": "Сохранить заметку",
+  "locationSectionTitle": "Местоположение",
+  "remindersSectionTitle": "Напоминания",
+  "reminderTextUnspecified": "{date} в {time}",
+  "@reminderTextUnspecified": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextSameDay": "в тот же день в {time}",
+  "@reminderTextSameDay": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextCountMinutesBefore": "за {count, plural, one {{count} минута} few {{count} минуты} other {{count} минут}} до",
+  "@reminderTextCountMinutesBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextCountHoursBefore": "за {count, plural, one {{count} час} few {{count} часа} other {{count} часов}} до",
+  "@reminderTextCountHoursBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextCountHoursMinutesBefore": "за {hcount, plural, one {{hcount} час} few {{hcount} часа} other {{hcount} часов}} {mcount, plural, one {{mcount} минута} few {{mcount} минуты} other {{mcount} минут}} до",
+  "@reminderTextCountHoursMinutesBefore": {
+    "placeholders": {
+      "hcount": {
+        "type": "int"
+      },
+      "mcount": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextOnTheDayBefore": "за день до в {time}",
+  "@reminderTextOnTheDayBefore": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextCountDaysBefore": "за {count, plural, one {{count} день} few {{count} дня} other {{count} дней}} до в {time}",
+  "@reminderTextCountDaysBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noNotesText": "Заметок нет!",
+  "pickANoteText": "Выбери заметку",
+  "errorMessageText": "Ошибка"
+}

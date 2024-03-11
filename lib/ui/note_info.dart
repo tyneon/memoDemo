@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/localizations.dart';
 
 import 'package:memo/src/note.dart';
 
@@ -8,27 +9,34 @@ class NoteInfo extends StatelessWidget {
   const NoteInfo(this.note, {super.key});
 
   String reminderMessage(
+    BuildContext context,
     DateTime? deadline,
     DateTime dateTime, {
     bool timed = false,
   }) {
+    final date = DateFormat("dd/MM/yy").format(dateTime);
+    final time = DateFormat("HH:mm").format(dateTime);
     if (deadline == null) {
-      return "on ${DateFormat("dd/MM/yy").format(dateTime)} at ${DateFormat("HH:mm").format(dateTime)}";
+      return AppLocalizations.of(context)!.reminderTextUnspecified(date, time);
     }
     final difference = deadline.difference(dateTime);
     if (!timed) {
       if (deadline.day == dateTime.day) {
-        return "on the same day at ${DateFormat("HH:mm").format(dateTime)}";
+        return AppLocalizations.of(context)!.reminderTextSameDay(time);
       }
     } else {
       if (difference.inMinutes < 60) {
-        return "${difference.inMinutes} minutes before";
+        return AppLocalizations.of(context)!
+            .reminderTextCountMinutesBefore(difference.inMinutes);
       }
       if (difference.inHours < 24) {
         if (difference.inMinutes - difference.inHours * 60 == 0) {
-          return "${difference.inHours} hours before";
+          return AppLocalizations.of(context)!
+              .reminderTextCountHoursBefore(difference.inHours);
         }
-        return "${difference.inHours} hours ${difference.inMinutes - difference.inHours * 60} minutes before";
+        return AppLocalizations.of(context)!
+            .reminderTextCountHoursMinutesBefore(difference.inHours,
+                difference.inMinutes - difference.inHours * 60);
       }
     }
     final differenceInDays = difference.inDays +
@@ -37,7 +45,10 @@ class NoteInfo extends StatelessWidget {
                 .isNegative
             ? 1
             : 0);
-    return "${differenceInDays == 1 ? "on the day before" : "$differenceInDays days before"} at ${DateFormat("HH:mm").format(dateTime)}";
+    return differenceInDays == 1
+        ? AppLocalizations.of(context)!.reminderTextOnTheDayBefore(time)
+        : AppLocalizations.of(context)!
+            .reminderTextCountDaysBefore(differenceInDays, time);
   }
 
   @override
@@ -98,7 +109,7 @@ class NoteInfo extends StatelessWidget {
               if (note.location != null) ...[
                 const Divider(),
                 Text(
-                  "Location:",
+                  "${AppLocalizations.of(context)!.locationSectionTitle}:",
                   style: TextStyle(
                     fontSize: 24,
                     color: Theme.of(context).colorScheme.primary,
@@ -108,7 +119,7 @@ class NoteInfo extends StatelessWidget {
               ],
               const Divider(),
               Text(
-                "Reminders:",
+                "${AppLocalizations.of(context)!.remindersSectionTitle}:",
                 style: TextStyle(
                   fontSize: 24,
                   color: Theme.of(context).colorScheme.primary,
@@ -121,6 +132,7 @@ class NoteInfo extends StatelessWidget {
                   itemCount: note.reminders.length,
                   itemBuilder: (context, index) => Text(
                     reminderMessage(
+                      context,
                       note.dateTime,
                       note.reminders[index],
                     ),

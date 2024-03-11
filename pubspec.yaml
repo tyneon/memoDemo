@@ -11,6 +11,8 @@ dependencies:
   firebase_core: ^2.24.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^2.4.5
   google_fonts: ^6.1.0
   http: ^1.1.0
@@ -26,3 +28,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

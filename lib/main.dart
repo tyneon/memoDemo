@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_gen/gen_l10n/localizations.dart';
 
 import 'package:memo/firebase_options.dart';
 import 'package:memo/ui/home_screen.dart';
@@ -25,6 +27,16 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        // Locale('ru'),
+      ],
       theme: ref.watch(themeProvider),
       home: const HomeScreen(),
     );

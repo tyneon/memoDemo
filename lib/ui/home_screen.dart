@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/localizations.dart';
 
 import 'package:memo/ui/editing_screen.dart';
 import 'package:memo/ui/note_screen.dart';
@@ -49,13 +50,13 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 4,
-        title: const Row(
+        title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.edit_notifications,
               size: 36,
             ),
-            Text("Remind me! app"),
+            Text(AppLocalizations.of(context)!.pageHomeTitle),
           ],
         ),
         actions: const [ThemeToggleButton()],
@@ -107,7 +108,7 @@ class HomeScreen extends ConsumerWidget {
                       ? NoteInfo(currentNote)
                       : Center(
                           child: Text(
-                            "Pick a note",
+                            AppLocalizations.of(context)!.pickANoteText,
                             style: TextStyle(
                               fontSize: 20,
                               color: Theme.of(context).colorScheme.primary,
@@ -242,7 +243,7 @@ class NotesList extends ConsumerWidget {
             )
           : Center(
               child: Text(
-                "No notes here yet!",
+                AppLocalizations.of(context)!.noNotesText,
                 style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.primary,
@@ -254,7 +255,7 @@ class NotesList extends ConsumerWidget {
         ),
       _ => Center(
           child: Text(
-            "Error",
+            AppLocalizations.of(context)!.errorMessageText,
             style: TextStyle(
               fontSize: 20,
               color: Theme.of(context).colorScheme.error,

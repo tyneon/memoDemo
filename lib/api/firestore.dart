@@ -34,8 +34,9 @@ class Firestore {
                   address: data['location']['address'],
                 ),
           reminders: reminders.docs
-              .map((reminderDoc) =>
-                  DateTime.parse(reminderDoc['date_time'] as String))
+              .map((reminderDoc) => DateTime.fromMillisecondsSinceEpoch(
+                      reminderDoc['date_time'].seconds * 1000)
+                  .toLocal())
               .toList(),
         ),
       );

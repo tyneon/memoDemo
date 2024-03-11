@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/localizations.dart';
 
 import 'package:memo/helpers.dart';
 import 'package:memo/src/location.dart';
@@ -73,7 +74,8 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
               });
             },
           ),
-          if (!pickDate || !wideModeActive(context)) const Text("Include date"),
+          if (!pickDate || !wideModeActive(context))
+            Text(AppLocalizations.of(context)!.includeDateCheckLabel),
         ],
       ),
       if (pickDate) ...[
@@ -103,14 +105,15 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
               });
             },
             readOnly: true,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               filled: true,
-              label: Text("Date"),
-              hintText: "Pick date",
+              label: Text(AppLocalizations.of(context)!.dateInputLabel),
+              hintText: AppLocalizations.of(context)!.dateInputHint,
             ),
             validator: (value) {
               if (pickDate && dateTime == null) {
-                return "Pick a date!";
+                return AppLocalizations.of(context)!
+                    .dateInputValidationErrorEmpty;
               }
               return null;
             },
@@ -127,7 +130,7 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
               },
             ),
             if (!pickTime || !wideModeActive(context))
-              const Text("Include time"),
+              Text(AppLocalizations.of(context)!.includeTimeCheckLabel),
           ],
         ),
         if (pickTime)
@@ -155,14 +158,15 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                 });
               },
               readOnly: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
-                label: Text("Time"),
-                hintText: "Pick time",
+                label: Text(AppLocalizations.of(context)!.timeInputLabel),
+                hintText: AppLocalizations.of(context)!.timeInputHint,
               ),
               validator: (value) {
                 if (pickDate && pickTime && dateTime == null) {
-                  return "Pick a time!";
+                  return AppLocalizations.of(context)!
+                      .timeInputValidationErrorEmpty;
                 }
                 return null;
               },
@@ -180,7 +184,7 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
               });
             },
           ),
-          const Text("Include location"),
+          Text(AppLocalizations.of(context)!.includeLocationCheckLabel),
         ],
       ),
       if (pickLocation)
@@ -193,14 +197,14 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
               child: TextFormField(
                 // initialValue: widget.note?.location?.address,
                 controller: locationController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   filled: true,
-                  label: Text("Location"),
-                  hintText: "Search location",
+                  label: Text(AppLocalizations.of(context)!.locationInputLabel),
+                  hintText: AppLocalizations.of(context)!.locationInputHint,
                 ),
                 validator: (value) {
                   if (pickLocation && value == "") {
-                    return "Enter location!";
+                    return AppLocalizations.of(context)!.locationInputHint;
                   }
                   return null;
                 },
@@ -259,7 +263,7 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
             }
             Navigator.of(context).pop();
           },
-          child: const Text("Save note"),
+          child: Text(AppLocalizations.of(context)!.saveNoteButtonLabel),
         ),
       ),
     ];
@@ -277,17 +281,19 @@ class _EditingScreenState extends ConsumerState<EditingScreen> {
                   initialValue: widget.note?.text,
                   maxLines: null,
                   expands: true,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
-                    label: Text("Note text"),
-                    hintText: "text goes here",
+                    label:
+                        Text(AppLocalizations.of(context)!.noteTextInputLabel),
+                    hintText: AppLocalizations.of(context)!.noteTextInputHint,
                   ),
                   onSaved: (newValue) {
                     noteText = newValue!;
                   },
                   validator: (value) {
                     if (value == null || value == "") {
-                      return "Note text can not be empty";
+                      return AppLocalizations.of(context)!
+                          .locationInputValidationErrorEmpty;
                     }
                     return null;
                   },

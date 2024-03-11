@@ -1,0 +1,87 @@
+{
+  "@@locale": "en",
+  "pageHomeTitle": "Remind me! app",
+  "noteTextInputLabel": "Note text",
+  "noteTextInputHint": "text goes here",
+  "noteTextInputValidationErrorEmpty": "Note text can not be empty",
+  "includeDateCheckLabel": "Include date",
+  "dateInputLabel": "Date",
+  "dateInputHint": "Pick a date",
+  "dateInputValidationErrorEmpty": "Pick a date!",
+  "includeTimeCheckLabel": "Include time",
+  "timeInputLabel": "Time",
+  "timeInputHint": "Pick a time",
+  "timeInputValidationErrorEmpty": "Pick a time!",
+  "includeLocationCheckLabel": "Include location",
+  "locationInputLabel": "Location",
+  "locationInputHint": "Search location",
+  "locationInputValidationErrorEmpty": "Select a location!",
+  "saveNoteButtonLabel": "Save note",
+  "locationSectionTitle": "Location",
+  "remindersSectionTitle": "Reminders",
+  "reminderTextUnspecified": "on {date} at {time}",
+  "@reminderTextUnspecified": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextSameDay": "on the same day at {time}",
+  "@reminderTextSameDay": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextCountMinutesBefore": "{count, plural, =1 {{count} minute} other {{count} minutes}} before",
+  "@reminderTextCountMinutesBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextCountHoursBefore": "{count, plural, =1 {{count} hour} other {{count} hours}} before",
+  "@reminderTextCountHoursBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextCountHoursMinutesBefore": "{hcount, plural, =1 {{hcount} hour} other {{hcount} hours}} {mcount, plural, =1 {{mcount} minute} other {{mcount} minutes}} before",
+  "@reminderTextCountHoursMinutesBefore": {
+    "placeholders": {
+      "hcount": {
+        "type": "int"
+      },
+      "mcount": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderTextOnTheDayBefore": "on the day before at {time}",
+  "@reminderTextOnTheDayBefore": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTextCountDaysBefore": "{count, plural, =1 {{count} day} other {{count} days}} before at {time}",
+  "@reminderTextCountDaysBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noNotesText": "No notes here yet!",
+  "pickANoteText": "Pick a note",
+  "errorMessageText": "Error"
+}
